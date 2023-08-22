@@ -37,7 +37,7 @@ public class Topic_01_Relative_Locator {
         WebElement loginButtonElement = driver.findElement(By.cssSelector("button.login-button"));
 
         By rememberMeCheckboxBy = By.id("RememberMe");
-        WebElement rememberMeTextElement = driver
+
     }
 
     @Test
