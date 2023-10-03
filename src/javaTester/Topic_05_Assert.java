@@ -29,7 +29,7 @@ public class Topic_05_Assert {
         driver.findElement(By.id("")).isSelected();
         new Select(driver.findElement(By.id(""))).isMultiple();
 
-        Assert.assertEquals();
+       // Assert.assertEquals("");
 
         // Ham thuong dung cho UnitTest
         Object name = null;
