@@ -1,6 +1,7 @@
 package webdriver;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -75,10 +76,87 @@ public class Topic07_Handle_Button_Excercise {
         password.sendKeys("666hhh@");
         Assert.assertTrue(btn_Login.isEnabled());
         Assert.assertEquals(Color.fromString(btn_Login.getCssValue("background-color")).asHex().toUpperCase(), "#C92127");
+    }
 
+   @Test
+    public void TC_03_Telerik_Checkbox(){
+        driver.get("https://demos.telerik.com/kendo-ui/checkbox/index");
+        By luggageCoverChx = By.xpath("//label[text() = 'Luggage compartment cover']/preceding-sibling::input");
+        if(!driver.findElement(luggageCoverChx).isSelected()){
+            driver.findElement(luggageCoverChx).click();
+        }
+        sleepInSeconds(2);
+        // verify checkbox da chon
+        Assert.assertTrue(driver.findElement(luggageCoverChx).isSelected());
+    }
+    @Test
+    public void TC_04_Default_RadioBtn(){
+        driver.get("https://demos.telerik.com/kendo-ui/radiobutton/index");
+        By petrolRadioBtn = By.xpath("//label[text()='2.0 Petrol, 147kW']/preceding-sibling::input");
+
+        if (!driver.findElement(petrolRadioBtn).isSelected()){
+            driver.findElement(petrolRadioBtn).click();
+        }
+        Assert.assertTrue(driver.findElement(petrolRadioBtn).isSelected());
+    }
+    @Test
+    public void TC_05_Select_All_Checkbox(){
+        driver.get("https://automationfc.github.io/multiple-fields/");
+
+        List<WebElement> listCHX = driver.findElements(By.xpath("//li[@data-type = 'control_checkbox']//input"));
+        for (WebElement checkbox: listCHX){
+            if (!checkbox.isSelected()){
+                checkbox.click();
+            }
+        }
+        for (WebElement checkbox: listCHX){
+            Assert.assertTrue(checkbox.isSelected());
+        }
+        // delete cookies and refresh page:
+        driver.manage().deleteAllCookies();
+        driver.navigate().refresh();
+
+        // sau khi refresh lai thi phai gan lai bien da tim truoc do :>
+        listCHX = driver.findElements(By.xpath("//li[@data-type = 'control_checkbox']//input"));
+
+        WebElement heartAttackCHX = null;
+        for (WebElement checkbox: listCHX){
+            if (checkbox.getAttribute("value").equals("Heart Attack") && !checkbox.isSelected()){
+                checkbox.click();
+                heartAttackCHX = checkbox;
+            }
+        }
+        Assert.assertTrue(heartAttackCHX.isSelected());
+    }
+
+    @Test
+    public void TC_06_Custom_Radio(){
+        driver.get("https://tiemchungcovid19.gov.vn/portal/register-person");
+        // Case1: Dung the input de click -> the input bi che boi 1 th div khac -> khong click duoc -> Failed
+        //driver.findElement(By.xpath("//div[text()='Register for your relative']/preceding-sibling::div/input")).click();
+
+        // Case2: Dung the div ben ngoai de click + verify : Click duoc nhung verify bi failed, vi the div k co trang thai la isSelected()
+
+        // Solution 1: Dung the div de click va the input de verify
+        // Cach nay 1 element ma can den 2 locator -> kho maintain more difficullity
+//        driver.findElement(By.xpath("//div[text()='Register yourself']/preceding-sibling::div/div[@class = 'mat-radio-outer-circle']")).click();
+//        Assert.assertTrue(driver.findElement(By.xpath("//div[text()='Register for your relative']/preceding-sibling::div/input")).isSelected());
+
+        //Solution 2: Dung input de click (dung JS click) + verify
+            //((JavascriptExecutor)driver).executeScript("");
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        jsExecutor.executeScript("arguments[0].click();",
+                driver.findElement(By.xpath("//div[text()='Đăng ký cho người thân']/preceding-sibling::div/input")));
+        Assert.assertTrue(driver.findElement(By.xpath("//div[text()='Đăng ký cho người thân']/preceding-sibling::div/input")).isSelected());
+
+    }
+    @Test
+    public void TC_07_Custom_Radio() {
+        driver.get("https://tiemchungcovid19.gov.vn/portal/register-person");
 
 
     }
+
 
     public void sleepInSeconds(long time){
         try {

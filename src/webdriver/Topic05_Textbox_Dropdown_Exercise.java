@@ -1,6 +1,7 @@
 package webdriver;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -82,7 +83,6 @@ public class Topic05_Textbox_Dropdown_Exercise {
         Assert.assertTrue(acc_info.contains(full_name));
         Assert.assertTrue(acc_info.contains(email));
         */
-
         //Logout
         driver.findElement(By.xpath("//span[@class ='label' and text()='Account']")).click();
         driver.findElement(By.xpath("//div[@id='header-account']//li[@class=' last']")).click();
@@ -102,13 +102,9 @@ public class Topic05_Textbox_Dropdown_Exercise {
     @Test
     public void Login_02_Success() {
         driver.get("http://live.techpanda.org/");
-
         driver.findElement(By.xpath("//div[@class = 'footer']//a[@title = 'My Account']")).click();
-
         /* there is 3 ways to solve this case:
-
          */
-
         // Register an account:
         driver.findElement(By.xpath("//span[text()= 'Create an Account']")).click();
         sleepInSeconds(2);
@@ -137,6 +133,10 @@ public class Topic05_Textbox_Dropdown_Exercise {
         Random rand = new Random();
         return "mia" + rand.nextInt(99999) + "@gmail.com";
     }
+    public String randomUsername(){
+        Random rand = new Random();
+        return "mia" + rand.nextInt(9999);
+    }
     public void sleepInSeconds(long time){
         try {
             Thread.sleep(time*1000);
@@ -146,8 +146,83 @@ public class Topic05_Textbox_Dropdown_Exercise {
     }
 
     @Test
-    public void Register_03_Invalid_Confirm_Email() {
-        }
+    public void Login_03_OrangeHRM() {
+        driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+        // login
+        driver.findElement(By.name("username")).sendKeys("Admin");
+        driver.findElement(By.name("password")).sendKeys("admin123");
+        driver.findElement(By.xpath("//button[@type ='submit']")).click();
+        sleepInSeconds(3);
+        driver.findElement(By.xpath("//ul[@class = 'oxd-main-menu']//span[text()='PIM']")).click();
+        sleepInSeconds(3);
+        driver.findElement(By.xpath("//li[@class = 'oxd-topbar-body-nav-tab']/a[text() = 'Add Employee']")).click();
+        sleepInSeconds(3);
+        String employeeId = driver.findElement(By.xpath("//label[text() = 'Employee Id']/parent::div/following-sibling::div/input")).getAttribute("value");
+
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        jsExecutor.executeScript("arguments[0].click();",
+                driver.findElement(By.xpath("//input[@type ='checkbox']")));
+
+        sleepInSeconds(2);
+        // Input info on screen 'Add employee - Create login details'
+        String firstName = "Mia", lastName = "Pham";
+        driver.findElement(By.name("firstName")).sendKeys(firstName);
+        driver.findElement(By.name("lastName")).sendKeys(lastName);
+
+        String username = randomUsername(), password = "Deptrai@123";
+        driver.findElement(By.xpath("//label[text()= 'Username']/parent::div/following-sibling::div/input")).sendKeys(username);
+        driver.findElement(By.xpath("//label[text()= 'Password']/parent::div/following-sibling::div/input")).sendKeys(password);
+        driver.findElement(By.xpath("//label[text()= 'Confirm Password']/parent::div/following-sibling::div/input")).sendKeys(password);
+
+        driver.findElement(By.xpath("//button[@type = 'submit']")).click();
+        sleepInSeconds(3);
+        // validate info of user
+        Assert.assertEquals(driver.findElement(By.name("firstName")).getAttribute("value"), firstName);
+        Assert.assertEquals(driver.findElement(By.name("lastName")).getAttribute("value"), lastName);
+        Assert.assertEquals(driver.findElement(By.xpath("//label[text() = 'Employee Id']/parent::div/following-sibling::div/input")).getAttribute("value"), employeeId);
+
+        // Click tab Immigaration
+        driver.findElement(By.xpath("//div[@class ='orangehrm-tabs-wrapper']/a[text() ='Immigration']")).click();
+        sleepInSeconds(2);
+
+        driver.findElement(By.xpath("//h6[text() ='Assigned Immigration Records']/following-sibling::button")).click();
+        sleepInSeconds(2);
+        String number = "154667676", comment = "Note something";
+        driver.findElement(By.xpath("//label[text()= 'Number']/parent::div/following-sibling::div/input")).sendKeys(number);
+        driver.findElement(By.xpath("//textarea")).sendKeys(comment);
+        driver.findElement(By.xpath("//button[@type = 'submit']")).click();
+        sleepInSeconds(2);
+        driver.findElement(By.xpath("//i[@class='oxd-icon bi-pencil-fill']/parent::button")).click();
+        sleepInSeconds(2);
+        Assert.assertEquals(driver.findElement(By.xpath("//label[text()='Number']/parent::div/following-sibling::div/input")).getAttribute("value"), number);
+        Assert.assertEquals( driver.findElement(By.xpath("//textarea")).getAttribute("value"), comment);
+
+        driver.findElement(By.xpath("//li[@class='oxd-userdropdown']")).click();
+        driver.findElement(By.xpath("//ul[@class='oxd-dropdown-menu']/li/a[text()='Logout']")).click();
+        sleepInSeconds(3);
+
+        // login again
+        driver.findElement(By.name("username")).sendKeys(username);
+        driver.findElement(By.name("password")).sendKeys(password);
+        driver.findElement(By.xpath("//button[@type ='submit']")).click();
+        sleepInSeconds(2);
+
+        driver.findElement(By.xpath("//ul[@class = 'oxd-main-menu']//span[text()='My Info']")).click();
+        sleepInSeconds(2);
+        Assert.assertEquals(driver.findElement(By.name("firstName")).getAttribute("value"), firstName);
+        Assert.assertEquals(driver.findElement(By.name("lastName")).getAttribute("value"), lastName);
+        Assert.assertEquals(driver.findElement(By.xpath("//label[text() = 'Employee Id']/parent::div/following-sibling::div/input")).getAttribute("value"), employeeId);
+
+        driver.findElement(By.xpath("//div[@class ='orangehrm-tabs-wrapper']/a[text() ='Immigration']")).click();
+        sleepInSeconds(2);
+        driver.findElement(By.xpath("//i[@class='oxd-icon bi-pencil-fill']/parent::button")).click();
+        sleepInSeconds(2);
+
+        Assert.assertEquals(driver.findElement(By.xpath("//label[text()= 'Number']/parent::div/following-sibling::div/input")).getAttribute("value"), number);
+        Assert.assertEquals( driver.findElement(By.xpath("//textarea")).getAttribute("value"), comment);
+
+
+    }
 
     @Test
     public void Register_04_Invalid_Password() {
