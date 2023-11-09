@@ -151,8 +151,9 @@ public class Topic07_Handle_Button_Excercise {
 
     }
     @Test
-    public void TC_07_Custom_Radio() {
-        driver.get("https://tiemchungcovid19.gov.vn/portal/register-person");
+    public void TC_07_Custom_Radio_Google_form() {
+        driver.get("https://docs.google.com/forms/d/e/1FAIpQLSfiypnd69zhuDkjKgqvpID9kwO29UCzeCVrGGtbNPZXQok0jA/viewform");
+
 
 
     }
