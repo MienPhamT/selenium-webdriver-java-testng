@@ -2,6 +2,7 @@ package webdriver;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -22,7 +23,7 @@ public class Topic04_WebBrowser_Commands_Exercise {
 //        } else {
 //            System.setProperty("webdriver.gecko.driver", projectPath + "/browserDrivers/geckodriver");
 //        }
-
+        //driver = new ChromeDriver();
         driver = new FirefoxDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
     }
