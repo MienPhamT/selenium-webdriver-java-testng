@@ -71,7 +71,7 @@ public class Topic10_Popup_Iframe_window {
 
     }
    @Test
-    public void TC_03_Promt_alert(){
+    public void TC_03_FixedPopup_NotInDom2(){
         driver.get("https://www.facebook.com/");
         driver.findElement(By.cssSelector("a[data-testid='open-registration-form-button']")).click();
         sleepInSeconds(2);
@@ -86,15 +86,60 @@ public class Topic10_Popup_Iframe_window {
 
     }
     @Test
-    public void TC_04_Authentication_Alert_ByPassInUrl(){
+    public void TC_04_PopupRandom_NotInDom(){
+        driver.get("https://www.javacodegeeks.com/");
+
+        By newLetterPopup= By.cssSelector("div.lepopup-popup-container>div:not([style^='display:none'])");
+        // Neu popup hien thi -> Close popup
+        // Neu popup k hien thi -> Qua step tiep theo: Search du lieu
+        if(driver.findElements(newLetterPopup).size() > 0 && driver.findElements(newLetterPopup).get(0).isDisplayed()){
+            // >0 nghia la da duoc render nhung chua biet co hien thi hay khong
+            driver.findElement(By.cssSelector("div.lepopup-popup-container>div:not([style^='display:none']) div.lepopup-element-html-content > a")).click();
+            sleepInSeconds(3);
+            System.out.println("Popup hien thi");
+        }
+        else {
+            System.out.println("Popup khong hien thi");
+        }
+        // Search du lieu
+        driver.findElement(By.cssSelector("input#search-input")).sendKeys("Agile Testing Explained");
+        driver.findElement(By.cssSelector("button#search-submit")).click();
+        sleepInSeconds(3);
+        String firstItemText = driver.findElement(By.xpath("//ul[@id='posts-container']/li[1]//h2/a")).getText();
+        // Toi uu hon thi can viet ham kiem tra xem co contains hay k, chu k phair check equal voi fix text
+        Assert.assertEquals(firstItemText, "Agile Testing Explained");
+
     }
     @Test
-    public void TC_05_Double_Click(){
-        driver.get("https://automationfc.github.io/basic-form/index.html");
-          }
-    @Test
-    public void TC_06_DragDropHTML4(){
+    public void TC_05_RanDomPopup_In_Dom(){
+        driver.get("https://vnk.edu.vn/");
+        sleepInSeconds(30);
+        By marketingPopup = By.cssSelector("div.tve-leads-conversion-object");
+        if (driver.findElement(marketingPopup).isDisplayed()){
+            driver.findElement(By.cssSelector("div.tve_ea_thrive_leads_form_close")).click();
+            sleepInSeconds(3);
+        }
+        else System.out.println("Popup khong hien thi");
 
+    }
+    @Test
+    public void TC_06_RanDomPopup_Not_In_DOM_2(){
+        driver.get("https://dehieu.vn/");
+        By marketingPopup = By.cssSelector("div.popup-content");
+        if(driver.findElements(marketingPopup).size()>0 && driver.findElements(marketingPopup).get(0).isDisplayed()){
+            System.out.println("Popup hien thi");
+            sleepInSeconds(5);
+            int heightBrowser = driver.manage().window().getSize().getHeight();
+            if (heightBrowser<1920){
+                ((JavascriptExecutor)driver).executeScript("arguments[0].click();", driver.findElement(By.cssSelector("button#close-popup")));
+            }
+            else {
+                driver.findElement(By.cssSelector("button#close-popup")).click();
+                System.out.println("man hinh to");
+            }
+            sleepInSeconds(3);
+        }
+        else System.out.println("Popup khong hien thi");
     }
     @Test
     public void TC_07_DragDropHTML5(){
