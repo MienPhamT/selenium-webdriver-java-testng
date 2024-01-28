@@ -2,7 +2,6 @@ package webdriver;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -18,12 +17,6 @@ public class Topic04_WebBrowser_Commands_Exercise {
     String accessPageUrl;
     @BeforeClass
     public void beforeClass() {
-//        if (osName.contains("Windows")) {
-//            System.setProperty("webdriver.gecko.driver", projectPath + "\\browserDrivers\\geckodriver.exe");
-//        } else {
-//            System.setProperty("webdriver.gecko.driver", projectPath + "/browserDrivers/geckodriver");
-//        }
-        //driver = new ChromeDriver();
         driver = new FirefoxDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
     }

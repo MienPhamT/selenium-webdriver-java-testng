@@ -5,6 +5,11 @@
       <root url="jar://$PROJECT_DIR$/libraries/selenium-server-4.11.0.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/libraries/selenium-api-4.11.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/selenium-server-4.11.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/selenium-api-4.11.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/selenium-api-4.11.0-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>
